@@ -174,4 +174,9 @@ public class EsgjspApplication extends SpringBootServletInitializer{
 	public String gobms() {
 		return "bms";
 	}
+	
+	@RequestMapping("/header")
+	public String gohome() {
+		return "home";
+	}
 }

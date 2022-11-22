@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,16 +11,39 @@
 <style>
 .login{
 }
+
+.disconnect{
+	padding: 10px 18px;
+	border-radius:10px;
+	border: 1px solid #e7e3eb;
+	background: #fff;
+	font-size: 1rem;
+	position: absolute;
+	margin-top: 14px;
+	z-index: 101;
+	color:#3e3b4a;
+	font-weight:bold;
+	display:none;
+	cursor:pointer;
+}
+
+.disconnect:hover{
+	background:#d3d3d3;
+}
 .walletaddress{
 	border:1px solid #eff4f5;
 	text-align:center;
 	border-radius:10px;
-	padding:5px 13px;
+	padding:5px 5px 5px 15px;
 	background:#eff4f5;
 	font-weight:bold;
 	box-shadow:rgb(0 0 0/10%) 0px -2px 0px inset;
 	margin-top:20px;
-	display:none;
+	cursor:pointer;
+}
+
+.walletaddress:hover{
+	background:#eff4f587;
 }
 a {
   text-decoration: none;
@@ -326,30 +350,59 @@ nav ul li ul li a {
               <a href="/alldata/index">All Battery Data</a>
             </li>
             <li>
-              <a href="/mydata/index">My Battery Data</a>
+              <c:if test="${address != null }">
+              <a href="/mydata/index">>My Battery Data</a>
+              </c:if>
+              <c:if test="${address == null }">
+              <a href="/" onclick="alertl();">My Battery Data</a>
+              </c:if>
             </li>
           </ul>
         </li>
         <li>
+         <c:if test="${address != null }">
           <a href="/rawchart">Raw Chart</a>
+          </c:if>
+          <c:if test="${address == null }">
+              <a href="/" onclick="alertl();">Raw Chart</a>
+              </c:if>
         </li>
         <li>
+        <c:if test="${address != null }">
           <a href="/bms">BMS</a>
+          </c:if>
+            <c:if test="${address == null }">
+              <a href="/" onclick="alertl();">BMS</a>
+              </c:if>
         </li>
         <li>
           <a href="#!">Transaction</a>
           <ul class="nav-dropdown">
             <li>
-              <a href="#!">Ipfs to Polygon</a>
+            <c:if test="${address != null }">
+              <a class="ipfs" href='#!' target="_blank">Ipfs to Polygon</a>
+              </c:if>
+              <c:if test="${address == null }">
+              <a href="/" onclick="alertl();">Ipfs to Polygon</a>
+              </c:if>
             </li>
             <li>
-              <a href="https://mumbai.polygonscan.com/address/0x78311Bb3C9a6adFEe5df8c77da64c0995e110D98">Hash data check</a>
+              <a href="https://mumbai.polygonscan.com/address/0x78311Bb3C9a6adFEe5df8c77da64c0995e110D98" target="_blank">Hash data check</a>
             </li>
           </ul>
         </li>
         <li>
+          <c:if test="${address == null }">
           <a class="login">지갑 연결</a>
-          <div class="walletaddress"></div>
+          </c:if>
+          <c:if test="${address != null }">
+          <div class="walletaddress">
+          <div class="text" style="display:inline-block; vertical-align:middle;">${address }</div>
+          <svg style="display:inline-block; vertical-align:middle;"viewBox="0 0 24 24" color="text" width="24px" xmlns="http://www.w3.org/2000/svg" class="sc-4ba21b47-0 IIbzK"><path d="M8.11997 9.29006L12 13.1701L15.88 9.29006C16.27 8.90006 16.9 8.90006 17.29 9.29006C17.68 9.68006 17.68 10.3101 17.29 10.7001L12.7 15.2901C12.31 15.6801 11.68 15.6801 11.29 15.2901L6.69997 10.7001C6.30997 10.3101 6.30997 9.68006 6.69997 9.29006C7.08997 8.91006 7.72997 8.90006 8.11997 9.29006Z"></path></svg></div>
+          	<form action="/header/logout" method="get">
+	  		<button type="submit" class="disconnect">Disconnect</button>
+	  		</form>
+          </c:if>
         </li>
       </ul>
     </nav>
@@ -450,15 +503,43 @@ $(function(){
       await window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then(function (user) {
-          console.log("logged in user:", user);
-          $(".login").hide();
-          $(".walletaddress").text(user);
+        	let data = {address : user[0]};
+          console.log("logged in user:", user[0]);
+          $(".walletaddress").text(user[0]);
           $(".walletaddress").show();
+          $(".ipfs").attr("href",'https://mumbai.polygonscan.com/address/' + user[0]);
+          $.ajax({
+       		  type : "post",
+    		  url : "/header/wallet",
+    		  data: data,
+    		  success : function(result){
+    				console.log("ajax 전송 완료");
+    				$(location).prop("href", location.href);
+    			},
+    			error : function(){
+    				console.log("ajax 에러");
+    			}
+          })
         });
       window.web3 = new Web3(window.ethereum);
     } else {
       console.log("No wallet");
     }
   }
+	
+	
+</script>
+<script>
+function alertl(){
+	window.alert('메타마스크 지갑 연결을 해주세요!')
+}
+
+$(".walletaddress").click(function(){
+	 if ($(".disconnect").css("display") == "none") { 
+	        $(".disconnect").fadeIn(); //display :none 일떄
+	    } else {
+	        $(".disconnect").fadeOut();  //display :block 일떄
+	    }
+})
 </script>
 </html>
