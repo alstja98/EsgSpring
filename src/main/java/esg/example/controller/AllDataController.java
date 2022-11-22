@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import esg.example.dto.AlldataDto;
 import esg.example.service.CsvService;
 
 @Controller
@@ -27,15 +28,15 @@ public class AllDataController {
 	
 	@RequestMapping(value="/table", method=RequestMethod.POST)
 	@ResponseBody
-	public ArrayList<String[]> showAllTable(){
-		List<String []> allTable = csvService.readCsv("C:\\workspace\\esgjsp\\esgjsp\\src\\main\\resources\\static\\csv\\all_data.csv");
-		ArrayList<String[]> allTable2 = new ArrayList<String[]>();
+	public ArrayList<AlldataDto> showAllTable(){
+		List<AlldataDto> allTable = csvService.readCsvArray("C:\\workspace\\esgjsp\\esgjsp\\src\\main\\resources\\static\\csv\\all_data.csv");
+		ArrayList<AlldataDto> allTable2 = new ArrayList<AlldataDto>();
 		
-		for (String[] strings : allTable) {
-			allTable2.add(strings);
+		for (AlldataDto data : allTable) {
+			allTable2.add(data);
 		}
 		
-		System.out.println(allTable2.get(0));
+		System.out.println(allTable2);
 		
 		return allTable2;
 	}

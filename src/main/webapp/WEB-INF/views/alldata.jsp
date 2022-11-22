@@ -889,7 +889,7 @@ $.ajax({
 				for(let i=0; i<result.length; i++){
 					alltable.push(result[i]);
 				}
-			$('.datata').text(alltable[0][0]);
+			console.log(alltable[0]);
 				
 			},
 			error : function(){

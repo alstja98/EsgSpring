@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import esg.example.component.CsvParser;
+import esg.example.dto.AlldataDto;
 
 @Service
 public class CsvServiceImpl implements CsvService{
@@ -16,6 +17,11 @@ public class CsvServiceImpl implements CsvService{
 	@Override
 	public List<String[]> readCsv(String filePath) {
 		return csvparser.readCsv(filePath);
+	}
+
+	@Override
+	public List<AlldataDto> readCsvArray(String filePath) {
+		return csvparser.readCsvArray(filePath);
 	}
 
 }
