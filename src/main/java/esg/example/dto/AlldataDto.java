@@ -10,7 +10,8 @@ public class AlldataDto {
 	private String charge_Voltage;
 	private String upload_Date;
 	
-	
+
+
 	public AlldataDto() {
 		super();
 		// TODO Auto-generated constructor stub

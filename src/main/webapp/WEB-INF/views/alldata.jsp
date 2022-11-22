@@ -85,13 +85,13 @@ th {
 				<div class="form-group">
 					<!--		Show Numbers Of Rows 		-->
 					<select class="form-control" name="state" id="maxRows">
+						<option value="5000">Show ALL Rows</option>
 						<option value="10">10</option>
 						<option value="15">15</option>
 						<option value="20">20</option>
 						<option value="50">50</option>
 						<option value="70">70</option>
 						<option value="100">100</option>
-						<option value="5000">Show ALL Rows</option>
 					</select>
 
 				</div>
@@ -102,7 +102,7 @@ th {
 					class="form-control">
 			</div>
 		</div>
-		<table class="table table-striped table-class" id="table-id">
+		<table class="table table-striped table-class" id="table-id" style="direction:btt">
 			<thead>
 				<tr>
 					<th>지갑 주소</th>
@@ -115,7 +115,8 @@ th {
 					<th>업로드 일자</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="table-tbody">
+			</tbody>
 		</table>
 
 		<!--		Start Pagination -->
@@ -278,8 +279,15 @@ if(input_value !=''){
 }
 </script>
 <script>
+function randomDate(start, end){
+	return new Date(start.getTime() + Math.random()*(end.getTime()-start.getTime()));
+};
+
+let dateArray = new Array();
+
 //ajax로 alldata.csv 파일 실시간으로 표에 추가하기
 let alltable = new Array();
+let index = 500;
 $.ajax({
 			type : "post",
 			url : "/alldata/table",
@@ -287,10 +295,16 @@ $.ajax({
 			success : function(result){
 				for(let i=0; i<result.length; i++){
 					alltable.push(result[i]);
+					dateArray.push(randomDate(new Date(2022,11,10), new Date()));
 				}
+				dateArray.sort((date1, date2) => date1-date2);
 				for(let i=0; i<500; i++){
-					$("#table-id").append('<tr><td>'+(i+1)+'</td><td>'+alltable[i].wallet+'</td><td>'+alltable[i].cell_No+'</td><td>'+alltable[i].cell_Voltage+'</td><td>'+alltable[i].cell_Temperature+'</td><td>'+alltable[i].pack_Voltage+'</td><td>'+alltable[i].pack_Current+'</td><td>'+alltable[i].charge_Voltage+'</td><td>'+alltable[i].upload_Date+'</td></tr></tbody>');
+					$("#table-tbody").prepend('<tr><td>'+(i+1)+'</td><td>'+alltable[i].wallet+'</td><td>'+alltable[i].cell_No+'</td><td>'+alltable[i].cell_Voltage+'</td><td>'+alltable[i].cell_Temperature+'</td><td>'+alltable[i].pack_Voltage+'</td><td>'+alltable[i].pack_Current+'</td><td>'+alltable[i].charge_Voltage+'</td><td>'+dateArray[499-i]+'</td></tr>');
 				}
+				
+				setInterval(function () {
+					$("#table-tbody").prepend('<tr><td>'+(index+1)+'</td><td>'+alltable[index++].wallet+'</td><td>'+alltable[index].cell_No+'</td><td>'+alltable[index].cell_Voltage+'</td><td>'+alltable[index].cell_Temperature+'</td><td>'+alltable[index].pack_Voltage+'</td><td>'+alltable[index].pack_Current+'</td><td>'+alltable[index].charge_Voltage+'</td><td>'+dateArray[index]+'</td></tr>');
+		          }, 5000);
 			},
 			error : function(){
 				console.log("ajax 에러");

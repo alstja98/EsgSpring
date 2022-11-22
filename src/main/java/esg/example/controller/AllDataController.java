@@ -1,7 +1,6 @@
 package esg.example.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ public class AllDataController {
 		for (AlldataDto data : allTable) {
 			allTable2.add(data);
 		}
-		
-		System.out.println(allTable2);
 		
 		return allTable2;
 	}

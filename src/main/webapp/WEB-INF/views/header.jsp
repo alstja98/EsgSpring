@@ -326,7 +326,7 @@ nav ul li ul li a {
               <a href="/alldata/index">All Battery Data</a>
             </li>
             <li>
-              <a href="/mydata">My Battery Data</a>
+              <a href="/mydata/index">My Battery Data</a>
             </li>
           </ul>
         </li>
@@ -334,7 +334,7 @@ nav ul li ul li a {
           <a href="/rawchart">Raw Chart</a>
         </li>
         <li>
-          <a href="bms">BMS</a>
+          <a href="/bms">BMS</a>
         </li>
         <li>
           <a href="#!">Transaction</a>

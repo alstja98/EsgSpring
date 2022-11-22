@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import au.com.bytecode.opencsv.CSVReader;
 import esg.example.dto.AlldataDto;
+import esg.example.dto.MyDataDto;
 
 @Component
 public class CsvParser {
@@ -52,6 +53,31 @@ public class CsvParser {
     			tmp.setPack_Current(s[5]);
     			tmp.setCharge_Voltage(s[6]);
     			tmp.setUpload_Date(s[7]);
+    			data.add(tmp);
+    		}
+    	} catch (FileNotFoundException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return data;
+    }
+    
+    public static List<MyDataDto> readCsvArray2(String filePath) {
+    	List<MyDataDto> data = new ArrayList<MyDataDto>();
+    	try {
+    		CSVReader reader = new CSVReader(new FileReader(filePath));
+    		// UTF-8
+    		// CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"), ",", '"', 1);
+    		String[] s;
+    		while ((s = reader.readNext()) != null) {
+    			MyDataDto tmp = new MyDataDto();
+    			tmp.setCell_Voltage(s[0]);
+    			tmp.setCell_Temperature(s[1]);
+    			tmp.setPack_Voltage(s[2]);
+    			tmp.setPack_Current(s[3]);
+    			tmp.setCharge_Voltage(s[4]);
     			data.add(tmp);
     		}
     	} catch (FileNotFoundException e) {
