@@ -11,6 +11,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import esg.example.service.CsvService;
 
@@ -35,11 +36,7 @@ public class EsgjspApplication extends SpringBootServletInitializer{
 	public String root() {
 		return "home";
 	}
-
-	@RequestMapping("/alldata")
-	public String goalldata() {
-		return "alldata";
-	}
+	
 	
 	@RequestMapping("/mydata")
 	public String gomydata() {

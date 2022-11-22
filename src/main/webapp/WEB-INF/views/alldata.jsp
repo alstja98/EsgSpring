@@ -69,12 +69,17 @@ th {
 	text-align: right;
 	color: #999;
 }
+
+.pagination-container nav{
+	float:left;
+}
 </style>
 </head>
 <body>
 	<%@ include file="./header.jsp"%>
 	<div class="container">
 		<div class="description">Blockchain에 저장된 [모든 유저의 배터리 Raw Data]</div>
+		<div class="datata"></div>
 		<div class="header_wrap">
 			<div class="num_rows">
 				<div class="form-group">
@@ -872,5 +877,24 @@ if(input_value !=''){
   $('#maxRows').trigger('change');
 }
 }
+</script>
+<script>
+//ajax로 alldata.csv 파일 실시간으로 표에 추가하기
+let alltable = new Array();
+$.ajax({
+			type : "post",
+			url : "/alldata/table",
+			data:"",
+			success : function(result){
+				for(let i=0; i<result.length; i++){
+					alltable.push(result[i]);
+				}
+			$('.datata').text(alltable[0][0]);
+				
+			},
+			error : function(){
+				console.log("ajax 에러");
+			}
+		})
 </script>
 </html>

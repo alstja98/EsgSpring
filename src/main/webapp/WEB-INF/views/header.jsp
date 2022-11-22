@@ -9,7 +9,6 @@
 <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
 <style>
 .login{
-	display:none;
 }
 .walletaddress{
 	border:1px solid #eff4f5;
@@ -20,6 +19,7 @@
 	font-weight:bold;
 	box-shadow:rgb(0 0 0/10%) 0px -2px 0px inset;
 	margin-top:20px;
+	display:none;
 }
 a {
   text-decoration: none;
@@ -323,7 +323,7 @@ nav ul li ul li a {
           <a href="#!">Raw Data</a>
           <ul class="nav-dropdown">
             <li>
-              <a href="/alldata">All Battery Data</a>
+              <a href="/alldata/index">All Battery Data</a>
             </li>
             <li>
               <a href="/mydata">My Battery Data</a>
@@ -349,7 +349,7 @@ nav ul li ul li a {
         </li>
         <li>
           <a class="login">지갑 연결</a>
-          <div class="walletaddress">0x0..cAdE</div>
+          <div class="walletaddress"></div>
         </li>
       </ul>
     </nav>
@@ -363,6 +363,7 @@ nav ul li ul li a {
   		<div class="m_wallet" onclick="m_login();"><img id="meta_icon" src="/images/metamask.png"/>Metamask 지갑 연결</div>
   	</div>
   </div>
+  
 </section>
 	
 </body>
@@ -392,14 +393,11 @@ nav ul li ul li a {
 	})(jQuery); // end jQuery
 </script>
 <script>
-// moralis wallet connect code
-/* Moralis init code */
-const serverUrl = "https://deep-index.moralis.io/api/v2";
+/* const serverUrl = "https://deep-index.moralis.io/api/v2";
 const appId = "V2Q6TDFyM2I8WqO9krGu2nNEewzqcFcL7hA2raSEYbqvo2x5D1pZAuqtQm9K1wVh";
 const apiKey = "V2Q6TDFyM2I8WqO9krGu2nNEewzqcFcL7hA2raSEYbqvo2x5D1pZAuqtQm9K1wVh"
 Moralis.start({ serverUrl,appId });
 
-/* Authentication code */
 async function m_login() {
   let user = Moralis.User.current();
   if (!user) {
@@ -420,7 +418,7 @@ async function m_login() {
 async function logOut() {
   await Moralis.User.logOut();
   console.log("logged out");
-}
+} */
 </script>
 <script>
 // modal 창 함수
@@ -433,5 +431,34 @@ $(function(){
 		$(".modal").fadeOut();
 	});
 });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4-rc.1/web3.min.js">
+</script>
+<script>
+ /*  $(document).ready(function(){
+		if(window.ethereum.request({method:"eth_requestAccounts"}).then(user)){
+			 $(".login").hide();
+			 $(".walletaddress").show();
+		}else{
+			$(".login").show();
+			$(".walletaddress").hide();
+		}
+	}); */
+  
+  async function m_login() {
+    if (window.ethereum) {
+      await window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then(function (user) {
+          console.log("logged in user:", user);
+          $(".login").hide();
+          $(".walletaddress").text(user);
+          $(".walletaddress").show();
+        });
+      window.web3 = new Web3(window.ethereum);
+    } else {
+      console.log("No wallet");
+    }
+  }
 </script>
 </html>
