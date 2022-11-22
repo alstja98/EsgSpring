@@ -8,7 +8,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
 <style>
-
+.login{
+	display:none;
+}
+.walletaddress{
+	border:1px solid #eff4f5;
+	text-align:center;
+	border-radius:10px;
+	padding:5px 13px;
+	background:#eff4f5;
+	font-weight:bold;
+	box-shadow:rgb(0 0 0/10%) 0px -2px 0px inset;
+	margin-top:20px;
+}
 a {
   text-decoration: none;
 }
@@ -337,6 +349,7 @@ nav ul li ul li a {
         </li>
         <li>
           <a class="login">지갑 연결</a>
+          <div class="walletaddress">0x0..cAdE</div>
         </li>
       </ul>
     </nav>
@@ -381,9 +394,10 @@ nav ul li ul li a {
 <script>
 // moralis wallet connect code
 /* Moralis init code */
-const serverUrl = "https://xxxxx/server";
-const appId = "YOUR_APP_ID";
-Moralis.start({ serverUrl, appId });
+const serverUrl = "https://deep-index.moralis.io/api/v2";
+const appId = "V2Q6TDFyM2I8WqO9krGu2nNEewzqcFcL7hA2raSEYbqvo2x5D1pZAuqtQm9K1wVh";
+const apiKey = "V2Q6TDFyM2I8WqO9krGu2nNEewzqcFcL7hA2raSEYbqvo2x5D1pZAuqtQm9K1wVh"
+Moralis.start({ serverUrl,appId });
 
 /* Authentication code */
 async function m_login() {
@@ -395,6 +409,7 @@ async function m_login() {
       .then(function (user) {
         console.log("logged in user:", user);
         console.log(user.get("ethAddress"));
+        $('.login').hide();
       })
       .catch(function (error) {
         console.log(error);
